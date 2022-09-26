@@ -1,15 +1,25 @@
 import Moment from "react-moment";
 import moment from "moment";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import useGetUpcomingInterviews from "../hooks/useGetUpcomingInterviews";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const UpcomingInterviews = () => {
   useDocumentTitle("Upcoming Interviews");
   const { status, data, error } = useGetUpcomingInterviews();
-  
-  console.log(data)
+
+  const deleteInterview = async (id) => {
+    axios
+      .delete(`http://localhost:8000/interviews/deleteInterview/${id}`)
+      .then((res) => {
+        alert("Interview deleted successfully!");
+        navigate("/interviews");
+      })
+      .catch((error) => {
+        alert(error?.response?.data.message);
+      });
+  }
 
   return (
     <main className="max-w-3xl mx-auto px-4 sm:px-6">
@@ -44,11 +54,18 @@ const UpcomingInterviews = () => {
                   </div>
                 </div>
                 <Link
-                  to={`/edit/${id}`}
+                  to={`/editInterview/${id}`}
                   className="btn-sm w-fix mx-auto bg-blue-400 text-white"
                 >
                   Edit
                 </Link>
+                <button
+                  
+                  className="btn-sm w-fix mx-auto bg-blue-400 text-white"
+                  onClick={() => {deleteInterview(id)}}
+                >
+                  Delete
+                </button>
               </div>
             })}
           </>

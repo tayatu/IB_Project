@@ -147,4 +147,21 @@ const editInterview = async (req , res) => {
     }
 }
 
-module.exports = {getInterviews, scheduleInterview, editInterview}
+const deleteInterview = async (req , res) => {
+    try {
+        const interview_id = req.params.interview_id;
+        const existing_interview = await interview.destroy({where: {id: interview_id}} , {force: true});
+        res.status(204);
+        return res.json({
+            "message": "Interview Session deleted successfully!",
+        })
+    } catch (err) {
+        console.log(err);
+        res.status(500);
+        return res.json({
+            "error": err
+        })
+    }
+}
+
+module.exports = {getInterviews, scheduleInterview, editInterview, deleteInterview}

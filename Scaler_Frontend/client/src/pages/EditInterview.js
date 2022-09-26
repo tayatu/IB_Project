@@ -74,7 +74,7 @@ const EditInterview = () => {
       .then((res) => {
         setIsFormSubmitting(false);
         alert("Interview Schedule is updated");
-        navigate("/upcoming");
+        navigate("/interviews");
       })
       .catch((error) => {
         setIsFormSubmitting(false);

@@ -11,11 +11,11 @@ const Header = () => {
             </div>
           </div>
 
-          <nav className="flex flex-grow justify-end">
+          {/* <nav className="flex flex-grow justify-end">
             <ul className="flex flex-wrap items-center">
               <li>
                 <Link
-                  to="/upcoming"
+                  to="/interviews"
                   className="cursor-pointer mr-4 btn-sm bg-blue-500 text-white"
                 >
                   Upcoming Interviews
@@ -23,14 +23,14 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  to="/schedule"
+                  to="/scheduleInterview"
                   className="bg-blue-500 text-white cursor-pointer btn-sm"
                 >
                   Schedule Interview
                 </Link>{" "}
               </li>
             </ul>
-          </nav>
+          </nav> */}
         </div>
       </div>
     </header>

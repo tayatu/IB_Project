@@ -39,5 +39,5 @@ button:focus,
 .form-select:focus,
 .form-checkbox:focus,
 .form-radio:focus {
-  outline: 2px solid rgba(#0070f4, 0.5);
+  outline: 2px solid rgba(#942BFC, 0.5);
 }

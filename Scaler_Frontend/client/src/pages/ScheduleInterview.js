@@ -62,7 +62,7 @@ const ScheduleInterview = () => {
       .then((res) => {
         setIsFormSubmitting(false);
         alert("Interview was successfully added.");
-        navigate("/upcoming");
+        navigate("/interviews");
       })
       .catch((error) => {
         setIsFormSubmitting(false);

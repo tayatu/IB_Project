@@ -1,18 +1,18 @@
 import { Routes, Route, Link } from "react-router-dom";
-import Header from "./components/Header";
 import EditInterview from "./pages/EditInterview";
+import Home from "./pages/Home";
 import ScheduleInterview from "./pages/ScheduleInterview";
 import UpcomingInterviews from "./pages/UpcomingInterviews";
 
 function App() {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <Routes>
-        <Route path="/" element={<UpcomingInterviews />} />
-        <Route path="/schedule" element={<ScheduleInterview />} />
-        <Route path="/upcoming" element={<UpcomingInterviews />} />
-        <Route path="/edit/:interviewId" element={<EditInterview />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/scheduleInterview" element={<ScheduleInterview />} />
+        <Route path="/interviews" element={<UpcomingInterviews />} />
+        <Route path="/editInterview/:interviewId" element={<EditInterview />} />
       </Routes>
       {/* <Footer /> */}
     </>
