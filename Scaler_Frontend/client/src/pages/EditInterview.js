@@ -64,13 +64,13 @@ const EditInterview = () => {
 
     const interview = {
       title: title,
-      start_time: startTime,
-      end_time: endTime,
-      usersInvited: participants 
+      start_time: StartTime,
+      end_time: EndTime,
+      participants: users
     };
-
+    console.log(interview)
     axios
-      .put('http://localhost:8000/interviews/editInterview/${interviewId}', interview)
+      .put(`http://localhost:8000/interviews/editInterview/${interviewId}`, interview)
       .then((res) => {
         setIsFormSubmitting(false);
         alert("Interview Schedule is updated");
@@ -134,14 +134,14 @@ const EditInterview = () => {
                 Update Interview Details
               </h2>
               <form onSubmit={handleFormSubmit} className="flex flex-col">
-                {/* <label>Title: </label> */}
-                {/* <input
+                <label>Title: </label>
+                <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
                   className="rounded-md"
-                /> */}
+                />
                 <label>Select Participants : </label>
                 <Select
                   isMulti
@@ -152,6 +152,7 @@ const EditInterview = () => {
                   className="basic-multi-select"
                   classNamePrefix="select"
                   onChange={(selectedOption) => {
+                    //console.log(selectedOption['value'])
                     setParticipants(selectedOption);
                   }}
                 />

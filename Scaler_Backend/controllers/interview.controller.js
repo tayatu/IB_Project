@@ -1,13 +1,11 @@
-
-
 const { interview, participant} = require('../database/init-db');
 
 const timingClashVerdict = async (participants_list , start_time , end_time) => {
     var flag = 0;
-    console.log(participants_list);
+    // console.log(participants_list);
     for (let participant_id in participants_list){
         // console.log(participant_id);
-        const participant_interviews = await participant.findOne({where: {id: participant[participant_id]} , include: interview});
+        const participant_interviews = await participant.findOne({where: {id: participants_list[participant_id]} , include: interview});
         var interviews_list = participant_interviews.dataValues.Interviews;
         for (let interview_id in interviews_list){
             const scheduled_start_time = interviews_list[interview_id].dataValues.start_time;
@@ -26,6 +24,9 @@ const timingClashVerdict = async (participants_list , start_time , end_time) => 
         if(flag === 1){
             return false;
         }
+    }
+    if(flag === 0) {
+        return true;
     }
 }
 
@@ -77,7 +78,8 @@ const scheduleInterview = async (req , res) => {
                 "message": "Number of participants should be atleast 2!"
             })
         }
-        if (!timingClashVerdict(participants , start_time , end_time)){
+        const verdict = await timingClashVerdict(participants , start_time , end_time);
+        if (!verdict){
             res.status(400);
             return res.json({
                 "message": "Interview Timing Clash"
@@ -85,6 +87,7 @@ const scheduleInterview = async (req , res) => {
         }
         const interview_created = await interview.create({ title: title , start_time: start_time , end_time: end_time});
         participants.forEach( async (participant_id) => {
+            // console.log(participant_id)
             const interviewee = await participant.findOne({where: {id: participant_id}});
             await interview_created.addParticipant(interviewee);
         });
@@ -107,7 +110,7 @@ const editInterview = async (req , res) => {
         const title = req.body.title;
         const start_time = new Date(req.body.start_time).getTime();
         const end_time = new Date(req.body.end_time).getTime();
-        const participants = req.body.usersInvited;
+        const participants = req.body.participants;
         // console.log(req.body);
         if (participants.length < 2){
             res.status(400);
@@ -115,7 +118,8 @@ const editInterview = async (req , res) => {
                 "message": "Number of participants should be atleast 2!"
             })
         }
-        if (!timingClashVerdict(participants , start_time , end_time)){
+        const verdict= await timingClashVerdict(participants , start_time , end_time);
+        if (!verdict){
             res.status(400);
             return res.json({
                 "message": "Interview Timing Clash"
