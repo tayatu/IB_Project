@@ -1,19 +1,5 @@
-# Interview Creation Portal
-A React application where users can schedule new interviews by selected date and time.
-
-## Features
-1. Schedule new interviews by selecting users
-2. View all upcoming interviews
-3. Edit interview details
-4. Backend using mongoose, express for storing interviews, user details.
-5. Send email to all users after scheduling or rescheduling interviews.
-6. Option to upload resume while scheduling interviews
-
-## To Do
-1. Display resume in edit interview page (if it exists)
-
-<p align="center">
-    Made with ♥
-    <br>
-    Ritik Patel
-</p>
+An interview creation page where the admin can create an interview by selecting participants, start time and end time. Backend should throw error with proper error message if: 
+Any of the participants is not available during the scheduled time (i.e, has another interview scheduled)
+No of participants is less than 2
+An interviews list page where admin can see all the upcoming interviews.
+An interview edit page where admin can edit the created interview with the same validations as on the creation page.
