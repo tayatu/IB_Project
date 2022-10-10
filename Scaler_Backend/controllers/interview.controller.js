@@ -1,6 +1,6 @@
 const { interview, participant} = require('../database/init-db');
 
-const timingClashVerdict = async (participants_list , start_time , end_time) => {
+const timingClashVerdict = async (participants_list , start_time , end_time,editinterview_id) => {
     var flag = 0;
     // console.log(participants_list);
     for (let participant_id in participants_list){
@@ -8,6 +8,10 @@ const timingClashVerdict = async (participants_list , start_time , end_time) => 
         const participant_interviews = await participant.findOne({where: {id: participants_list[participant_id]} , include: interview});
         var interviews_list = participant_interviews.dataValues.Interviews;
         for (let interview_id in interviews_list){
+            console.log(interviews_list[interview_id].dataValues.id);
+            if(editinterview_id==interviews_list[interview_id].dataValues.id){
+                continue;
+            }
             const scheduled_start_time = interviews_list[interview_id].dataValues.start_time;
             const scheduled_end_time = interviews_list[interview_id].dataValues.end_time;
             if (start_time >= scheduled_start_time && start_time < scheduled_end_time){
@@ -29,12 +33,18 @@ const timingClashVerdict = async (participants_list , start_time , end_time) => 
         return true;
     }
 }
-
+const timingsort=(interview1,interview2)=>{
+    if(interview1.dataValues.start_time>=interview2.dataValues.start_time){
+        return 1;
+    }
+    return -1;
+}
 const getInterviews = async (req , res) => {
     // console.log(req.params.id);
     if(req.params.id === undefined){
         try {
             const interviews = await interview.findAll({include: participant});
+            interviews.sort(timingsort);
             res.status(200);
             return res.json({
                 "message": "Data Fetched successfully!",
@@ -78,11 +88,28 @@ const scheduleInterview = async (req , res) => {
                 "message": "Number of participants should be atleast 2!"
             })
         }
+
+        if(start_time>=end_time){
+            res.status(400);
+            return res.json({
+                "message": "End Time should be greater than Start Time"
+            })
+        }
+        const currEpochTime= new Date().getTime();
+        
+        if(start_time<=currEpochTime){
+            res.status(400);
+            return res.json({
+                "message": "Start Time should be greater than Current Time"
+            })
+        }
+
         const verdict = await timingClashVerdict(participants , start_time , end_time);
+
         if (!verdict){
             res.status(400);
             return res.json({
-                "message": "Interview Timing Clash"
+                "message": "Interview Timings Clash"
             })
         }
         const interview_created = await interview.create({ title: title , start_time: start_time , end_time: end_time});
@@ -111,14 +138,29 @@ const editInterview = async (req , res) => {
         const start_time = new Date(req.body.start_time).getTime();
         const end_time = new Date(req.body.end_time).getTime();
         const participants = req.body.participants;
-        // console.log(req.body);
+        
         if (participants.length < 2){
             res.status(400);
             return res.json({
                 "message": "Number of participants should be atleast 2!"
             })
         }
-        const verdict= await timingClashVerdict(participants , start_time , end_time);
+        if(start_time>=end_time){
+            res.status(400);
+            return res.json({
+                "message": "End Time should be greater than Start Time"
+            })
+        }
+
+        const currEpochTime= new Date().getTime();
+        
+        if(start_time<=currEpochTime){
+            res.status(400);
+            return res.json({
+                "message": "Start Time should be greater than Current Time"
+            })
+        }
+        const verdict= await timingClashVerdict(participants , start_time , end_time,interview_id);
         if (!verdict){
             res.status(400);
             return res.json({

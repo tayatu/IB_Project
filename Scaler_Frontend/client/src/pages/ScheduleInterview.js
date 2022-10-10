@@ -3,7 +3,7 @@ import moment from "moment";
 import axios from "axios";
 import makeAnimated from "react-select/animated";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import useGetAllUsers from "../hooks/useGetAllUsers";
 import useDocumentTitle from "../hooks/useDocumentTitle";
@@ -74,6 +74,14 @@ const ScheduleInterview = () => {
     <main className="max-w-3xl mx-auto px-4 sm:px-6">
       <div className="pt-32 pb-12">
         <div className="flex flex-col">
+          <h2>
+            <Link
+              to="/interviews"
+              className="bg-blue-500 text-white cursor-pointer btn-sm"
+              >
+              Upcoming Interviews
+            </Link>{" "}
+          </h2>
           <h2 className="text-xl text-center font-medium mb-4">
             Schedule A New Interview
           </h2>

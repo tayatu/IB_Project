@@ -30,7 +30,7 @@ const EditInterview = () => {
   } = useGetAllUsers();
 
   const [participants, setParticipants] = useState([]);
-  const [title, setTitle] = useState("Technical Round")
+  const [title, setTitle] = useState("")
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [date, setDate] = useState(new Date());
@@ -107,11 +107,11 @@ const EditInterview = () => {
               <div className="grid grid-cols-2 mb-2">
                 <div>
                   Start Time:
-                  {moment.utc(getInterviewData.data.start_time).format("hh:mm")}
+                  {moment.utc(getInterviewData.data.start_time).format("hh:mm A")}
                 </div>
                 <div>
                   End Time:
-                  {moment.utc(getInterviewData.data.end_time).format("hh:mm")}
+                  {moment.utc(getInterviewData.data.end_time).format("hh:mm A")}
                 </div>
               </div>
               <ul className="list-disc px-2">
